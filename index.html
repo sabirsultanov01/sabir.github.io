@@ -1,1 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Does Ravan Love You?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Quicksand', sans-serif; }
+    
+    .container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, hsl(350, 100%, 95%) 0%, hsl(340, 100%, 90%) 50%, hsl(350, 80%, 92%) 100%);
+      overflow: hidden;
+      position: relative;
+      padding: 1rem;
+    }
+    
+    .content { text-align: center; z-index: 10; }
+    .heart-icon { width: 64px; height: 64px; fill: hsl(340, 82%, 52%); animation: heartbeat 1.5s ease-in-out infinite; }
+    h1 { font-size: 2.5rem; font-weight: 700; color: hsl(350, 50%, 20%); margin: 1rem 0; }
+    .subtitle { font-size: 1.1rem; color: hsl(350, 20%, 45%); margin-bottom: 2rem; }
+    
+    .buttons { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; align-items: center; }
+    
+    .btn-love {
+      background: hsl(340, 82%, 52%);
+      color: white;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 10px 30px -10px hsla(340, 82%, 52%, 0.5);
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+    .btn-love:hover { box-shadow: 0 15px 40px -10px hsla(340, 82%, 52%, 0.6); }
+    
+    .btn-dont {
+      background: hsl(350, 30%, 90%);
+      color: hsl(350, 20%, 45%);
+      border: 1px solid hsl(350, 50%, 85%);
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+    
+    .hint { color: hsl(340, 82%, 52%); font-weight: 500; margin-top: 2rem; animation: fadeIn 0.5s ease-out; display: none; }
+    
+    /* Celebration Screen */
+    .celebration {
+      min-height: 100vh;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, hsl(340, 82%, 52%) 0%, hsl(350, 90%, 60%) 50%, hsl(340, 85%, 55%) 100%);
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 100;
+      animation: scaleIn 0.5s ease-out;
+    }
+    .celebration h1 { color: white; font-size: 3.5rem; }
+    .celebration p { color: rgba(255,255,255,0.9); font-size: 1.5rem; margin-top: 1rem; }
+    .celebration .sub { color: rgba(255,255,255,0.7); font-size: 1.1rem; margin-top: 2rem; }
+    .celebration .heart-big { width: 96px; height: 96px; fill: white; animation: heartbeat 1.5s ease-in-out infinite; }
+    
+    /* Floating Hearts */
+    .floating-heart {
+      position: absolute;
+      fill: hsl(340, 82%, 52%);
+      opacity: 0.2;
+      animation: float linear infinite;
+      pointer-events: none;
+    }
+    
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.1); }
+      50% { transform: scale(1); }
+      75% { transform: scale(1.15); }
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(-100vh) rotate(360deg); }
+    }
+    
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes scaleIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    
+    @media (min-width: 768px) {
+      h1 { font-size: 3.5rem; }
+      .celebration h1 { font-size: 4.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="main">
+    <div class="content">
+      <svg class="heart-icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <h1>Does Ravan Love You?</h1>
+      <p class="subtitle">Choose wisely... 💕</p>
+      <div class="buttons">
+        <button class="btn-love" id="loveBtn">❤️ Ravan Loves Me</button>
+        <button class="btn-dont" id="dontBtn">Ravan Don't Love Me</button>
+      </div>
+      <p class="hint" id="hint">See? There's only one answer! 💖</p>
+    </div>
+  </div>
+  
+  <div class="celebration" id="celebration">
+    <svg class="heart-big" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    <h1>Of Course!</h1>
+    <p>Ravan loves you forever! 💕</p>
+    <p class="sub">There was never any doubt 🥰</p>
+  </div>
+
+  <script>
+    let scale = 1;
+    const loveBtn = document.getElementById('loveBtn');
+    const dontBtn = document.getElementById('dontBtn');
+    const hint = document.getElementById('hint');
+    const celebration = document.getElementById('celebration');
+
+    dontBtn.addEventListener('click', () => {
+      scale = Math.min(scale + 0.3, 3);
+      loveBtn.style.transform = `scale(${scale})`;
+      dontBtn.style.opacity = Math.max(0.3, 1 - (scale - 1) * 0.3);
+      dontBtn.style.transform = `scale(${Math.max(0.5, 1 - (scale - 1) * 0.2)})`;
+      if (scale > 1.5) hint.style.display = 'block';
+    });
+
+    loveBtn.addEventListener('click', () => {
+      celebration.style.display = 'flex';
+    });
+
+    // Create floating hearts
+    for (let i = 0; i < 15; i++) {
+      const heart = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      heart.setAttribute('viewBox', '0 0 24 24');
+      heart.classList.add('floating-heart');
+      heart.innerHTML = '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>';
+      heart.style.left = Math.random() * 100 + '%';
+      heart.style.bottom = '-50px';
+      heart.style.width = (12 + Math.random() * 20) + 'px';
+      heart.style.animationDelay = Math.random() * 5 + 's';
+      heart.style.animationDuration = (15 + Math.random() * 10) + 's';
+      document.querySelector('.container').appendChild(heart);
+    }
+  </script>
+</body>
+</html>
 
